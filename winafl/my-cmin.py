@@ -352,44 +352,48 @@ def main(argc, argv):
         level = logging.DEBUG,
         format = '%(asctime)s [%(levelname)-5.5s] [%(funcName)s] %(message)s'
     )
-    
-    if (argv[1] == '-mv' or argv[1] == "-move"):
-        args = MvArgsparse()
-        file = "".join(args.move)  
-        if os.path.isfile(file) is False:
-            print('[!] The argument of \'- move\' %s is not a file. Or it doesn\'t exist' %(file))
-            return 1
-        if os.path.isdir(args.output):
-           print('[!] %s already exists, please remove it to avoid data loss.' %(args.output))
-           return 1
-
-        path = os.getcwd()+"\\"+str(args.output)
-        os.mkdir(args.output)
-        for line in open(file): 
-            line = line.strip("\n")
-            print("Move %s to %s" %(line, path))
-            shutil.move(line, path)
-        return 0
-
-    elif(argv[1] == '-cp' or argv[1] == "-copy"):
-        args = CpArgsparse()
-        file = "".join(args.copy)  
-        if os.path.isfile(file) is False:
-            print('[!] The argument of \'- move\' %s is not a file. Or it doesn\'t exist' %(file))
-            return 1
-        if os.path.isdir(args.output):
-           print('[!] %s already exists, please remove it to avoid data loss.' %(args.output))
-           return 1
-        output = []
-        for line in open(file): 
-            line = line.strip("\n")
-            output.append(line)
-        path = os.getcwd()+"\\"+str(args.output)
-        os.mkdir(args.output)
-        for file_path in output:
-            print("Copy %s to %s" %(file_path, path))
-            do_unique_copy(file_path, args.output)
-        return 0
+    if argc > 1:
+        if (argv[1] == '-mv' or argv[1] == "-move") :
+            args = MvArgsparse()
+            file = "".join(args.move)  
+            if os.path.isfile(file) is False:
+                print('[!] The argument of \'- move\' %s is not a file. Or it doesn\'t exist' %(file))
+                return 1
+            if os.path.isdir(args.output):
+                print('[!] %s already exists, please remove it to avoid data loss.' %(args.output))
+                return 1
+                
+            path = os.getcwd()+"\\"+str(args.output)
+            os.mkdir(args.output)
+            for line in open(file): 
+                line = line.strip("\n")
+                print("Move %s to %s" %(line, path))
+                shutil.move(line, path)
+            return 0
+            
+        elif(argv[1] == '-cp' or argv[1] == "-copy"):
+            args = CpArgsparse()
+            file = "".join(args.copy)  
+            if os.path.isfile(file) is False:
+                print('[!] The argument of \'- move\' %s is not a file. Or it doesn\'t exist' %(file))
+                return 1
+                
+            if os.path.isdir(args.output):
+                print('[!] %s already exists, please remove it to avoid data loss.' %(args.output))
+                return 1
+                
+            output = []
+            for line in open(file): 
+                line = line.strip("\n")
+                output.append(line)
+            
+            path = os.getcwd()+"\\"+str(args.output)
+            os.mkdir(args.output)
+            
+            for file_path in output:
+                print("Copy %s to %s" %(file_path, path))
+                do_unique_copy(file_path, args.output)
+                return 0
     
     args = setup_argparse()
     check_file("output.txt")
